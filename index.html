@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kabirs Graphics&amp;Graphic Designer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;600;700;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#1A1A2E;
+    --paper:#FFF8F0;
+    --coral:#FF6B4A;
+    --yellow:#FFC857;
+    --mint:#4ECDC4;
+    --violet:#8C6DFF;
+    --ink-soft:#2E2E4A;
+    --max-w:1180px;
+  }
+
+  *{ box-sizing:border-box; }
+  html{ scroll-behavior:smooth; }
+  @media (prefers-reduced-motion: reduce){
+    html{ scroll-behavior:auto; }
+    *{ animation-duration:0.001ms !important; animation-iteration-count:1 !important; transition-duration:0.001ms !important; }
+  }
+
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Inter',sans-serif;
+    font-size:16px;
+    line-height:1.55;
+    overflow-x:hidden;
+  }
+
+  h1,h2,h3{
+    font-family:'Unbounded',sans-serif;
+    margin:0;
+    line-height:1.08;
+    letter-spacing:-0.01em;
+  }
+
+  a{ color:inherit; }
+  button{ font-family:inherit; }
+  img{ max-width:100%; display:block; }
+
+  .wrap{ max-width:var(--max-w); margin:0 auto; padding:0 32px; }
+
+  /* -------- Cursor dot -------- */
+  #cursor-dot{
+    position:fixed; top:0; left:0; width:18px; height:18px; border-radius:50%;
+    background:var(--coral); pointer-events:none; z-index:9999; mix-blend-mode:normal;
+    transform:translate(-50%,-50%); transition:background .25s ease, width .2s ease, height .2s ease;
+    display:none;
+  }
+  @media (hover:hover) and (pointer:fine){ #cursor-dot{ display:block; } }
+
+  /* -------- Nav -------- */
+  header{
+    position:fixed; top:0; left:0; right:0; z-index:500;
+    padding:22px 0;
+    transition:background .3s ease, padding .3s ease, box-shadow .3s ease;
+  }
+  header.scrolled{
+    background:rgba(255,248,240,0.88);
+    backdrop-filter:blur(10px);
+    padding:14px 0;
+    box-shadow:0 1px 0 rgba(26,26,46,0.08);
+  }
+  nav.wrap{ display:flex; align-items:center; justify-content:space-between; }
+  .logo{ font-family:'Unbounded',sans-serif; font-weight:700; font-size:1.05rem; text-decoration:none; }
+  .logo span{ color:var(--coral); }
+  .nav-links{ display:flex; gap:8px; list-style:none; margin:0; padding:0; }
+  .nav-links a{
+    text-decoration:none; font-weight:600; font-size:0.92rem; padding:8px 16px;
+    border-radius:100px; transition:background .2s ease;
+  }
+  .nav-links a:hover, .nav-links a:focus-visible{ background:var(--ink); color:var(--paper); }
+  .nav-links a:focus-visible{ outline:2px solid var(--coral); outline-offset:2px; }
+
+  /* -------- Hero -------- */
+  .hero{
+    padding:168px 0 90px;
+    display:grid;
+    grid-template-columns:1.15fr 0.85fr;
+    gap:48px;
+    align-items:center;
+  }
+  .hero-eyebrow{
+    font-weight:600; font-size:0.95rem; color:var(--ink-soft); margin-bottom:18px;
+  }
+  .hero h1{
+    font-size:clamp(2.6rem, 5.4vw, 4.4rem);
+    font-weight:700;
+  }
+  .hero-sub{
+    max-width:46ch; margin:26px 0 34px; font-size:1.12rem; color:var(--ink-soft);
+  }
+  .cta-row{ display:flex; gap:14px; flex-wrap:wrap; }
+  .btn{
+    font-weight:700; font-size:0.98rem; padding:15px 28px; border-radius:100px;
+    border:2px solid var(--ink); background:var(--ink); color:var(--paper);
+    cursor:pointer; text-decoration:none; display:inline-flex; align-items:center;
+    transition:transform .18s ease, background .18s ease, color .18s ease;
+  }
+  .btn:hover{ transform:translateY(-2px); }
+  .btn:focus-visible{ outline:2px solid var(--coral); outline-offset:3px; }
+  .btn.ghost{ background:transparent; color:var(--ink); }
+  .btn.ghost:hover{ background:var(--ink); color:var(--paper); }
+
+  .hero-graphic{ position:relative; height:420px; }
+  .blob{
+    position:absolute; border-radius:50%;
+    animation:float 7s ease-in-out infinite;
+  }
+  .blob.b1{ width:230px; height:230px; background:var(--coral); top:10px; right:60px; animation-delay:0s; }
+  .blob.b2{ width:160px; height:160px; background:var(--yellow); bottom:40px; right:0; animation-delay:1.2s; }
+  .blob.b3{ width:120px; height:120px; background:var(--violet); bottom:10px; left:10px; animation-delay:2s; }
+  .blob.b4{ width:90px; height:90px; background:var(--mint); top:0; left:40px; animation-delay:0.6s; }
+  @keyframes float{
+    0%,100%{ transform:translateY(0) rotate(0deg); }
+    50%{ transform:translateY(-18px) rotate(6deg); }
+  }
+
+  .tag-row{ display:flex; flex-wrap:wrap; gap:10px; margin-top:44px; }
+  .tag-pill{
+    font-weight:600; font-size:0.85rem; padding:9px 18px; border-radius:100px;
+    border:2px solid var(--ink); background:transparent;
+  }
+  .tag-pill:nth-child(2){ background:var(--yellow); border-color:var(--yellow); }
+  .tag-pill:nth-child(3){ background:var(--mint); border-color:var(--mint); }
+  .tag-pill:nth-child(4){ background:var(--violet); color:var(--paper); border-color:var(--violet); }
+  .tag-pill:nth-child(1){ background:var(--coral); border-color:var(--coral); }
+
+  /* -------- Section shell -------- */
+  section{ padding:100px 0; }
+  .section-head{ margin-bottom:52px; max-width:60ch; }
+  .section-head h2{ font-size:clamp(1.9rem,3.4vw,2.6rem); }
+  .section-head p{ color:var(--ink-soft); margin-top:14px; font-size:1.04rem; }
+
+  /* -------- Work / filters -------- */
+  .work{ background:var(--ink); color:var(--paper); }
+  .work .section-head p{ color:#C9C9E0; }
+  .filters{ display:flex; gap:10px; flex-wrap:wrap; margin-bottom:44px; }
+  .filter-btn{
+    background:transparent; border:2px solid #4A4A6A; color:var(--paper);
+    padding:10px 20px; border-radius:100px; font-weight:600; cursor:pointer;
+    transition:border-color .2s ease, background .2s ease;
+  }
+  .filter-btn:hover{ border-color:var(--paper); }
+  .filter-btn.active{ background:var(--paper); color:var(--ink); border-color:var(--paper); }
+  .filter-btn:focus-visible{ outline:2px solid var(--coral); outline-offset:2px; }
+
+  .grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:24px; }
+  .card{
+    background:var(--ink-soft); border-radius:18px; overflow:hidden; cursor:pointer;
+    border:1px solid rgba(255,255,255,0.08);
+    transition:transform .22s ease, box-shadow .22s ease;
+    display:flex; flex-direction:column;
+  }
+  .card:hover{ transform:translateY(-6px); box-shadow:0 18px 40px rgba(0,0,0,0.35); }
+  .card:focus-visible{ outline:2px solid var(--coral); outline-offset:2px; }
+  .card-media{ height:190px; position:relative; }
+  .card-body{ padding:22px; flex:1; display:flex; flex-direction:column; gap:8px; }
+  .card-cat{ font-size:0.78rem; font-weight:700; letter-spacing:0.02em; }
+  .card-body h3{ font-size:1.2rem; font-family:'Unbounded',sans-serif; font-weight:600; }
+  .card-year{ font-size:0.85rem; color:#B7B7D6; margin-top:auto; }
+  .card.hidden{ display:none; }
+
+  /* -------- About -------- */
+  .about{ display:grid; grid-template-columns:0.8fr 1.2fr; gap:60px; align-items:start; }
+  .avatar{
+    width:100%; aspect-ratio:1; border-radius:24px;
+    background:linear-gradient(135deg,var(--coral),var(--yellow) 55%,var(--mint));
+    position:relative; overflow:hidden;
+  }
+  .avatar::after{
+    content:""; position:absolute; inset:14px; border-radius:16px;
+    background:var(--paper); opacity:0.06;
+  }
+  .about-bio p{ font-size:1.08rem; color:var(--ink-soft); max-width:58ch; }
+  .skills{ display:flex; flex-wrap:wrap; gap:10px; margin-top:26px; }
+  .skill-chip{
+    font-size:0.85rem; font-weight:600; padding:8px 16px; border-radius:100px;
+    background:#F1EBDD; border:1px solid rgba(26,26,46,0.1);
+  }
+
+  .process{ margin-top:56px; }
+  .process-list{ list-style:none; margin:0; padding:0; display:grid; gap:0; }
+  .process-item{
+    display:grid; grid-template-columns:64px 1fr; gap:20px; padding:22px 0;
+    border-top:1px solid rgba(26,26,46,0.12);
+  }
+  .process-item:last-child{ border-bottom:1px solid rgba(26,26,46,0.12); }
+  .process-num{ font-family:'Unbounded',sans-serif; font-weight:700; color:var(--coral); font-size:1.1rem; }
+  .process-item h3{ font-size:1.1rem; font-weight:600; margin-bottom:6px; }
+  .process-item p{ color:var(--ink-soft); margin:0; font-size:0.98rem; }
+
+  /* -------- Contact -------- */
+  .contact{ background:var(--yellow); }
+  .contact-grid{ display:grid; grid-template-columns:1fr 1fr; gap:56px; align-items:start; }
+  .contact h2{ font-size:clamp(2rem,4vw,3rem); }
+  .contact p.lead{ margin-top:16px; font-size:1.08rem; max-width:42ch; }
+  .contact-links{ margin-top:34px; display:flex; flex-direction:column; gap:10px; font-weight:600; }
+  .contact-links a{ text-decoration:none; width:fit-content; border-bottom:2px solid var(--ink); padding-bottom:2px; }
+
+  form{ display:flex; flex-direction:column; gap:16px; }
+  label{ font-weight:600; font-size:0.9rem; margin-bottom:6px; display:block; }
+  input, textarea{
+    width:100%; padding:14px 16px; border-radius:12px; border:2px solid var(--ink);
+    font-family:'Inter',sans-serif; font-size:0.98rem; background:var(--paper); color:var(--ink);
+  }
+  input:focus-visible, textarea:focus-visible{ outline:2px solid var(--violet); outline-offset:2px; }
+  textarea{ min-height:120px; resize:vertical; }
+  .field-error{ color:#B8390E; font-size:0.85rem; font-weight:600; min-height:1.1em; }
+  .submit-row{ display:flex; align-items:center; gap:16px; }
+  #form-status{ font-weight:600; font-size:0.92rem; }
+
+  footer{ background:var(--ink); color:#C9C9E0; padding:32px 0; font-size:0.9rem; }
+  footer .wrap{ display:flex; justify-content:space-between; flex-wrap:wrap; gap:12px; }
+
+  /* -------- Modal -------- */
+  .modal-overlay{
+    position:fixed; inset:0; background:rgba(26,26,46,0.72); display:none;
+    align-items:center; justify-content:center; padding:24px; z-index:1000;
+  }
+  .modal-overlay.open{ display:flex; }
+  .modal{
+    background:var(--paper); border-radius:22px; max-width:640px; width:100%;
+    max-height:86vh; overflow-y:auto; padding:40px; position:relative;
+  }
+  .modal-close{
+    position:absolute; top:20px; right:20px; background:var(--ink); color:var(--paper);
+    border:none; width:36px; height:36px; border-radius:50%; font-size:1.1rem; cursor:pointer;
+  }
+  .modal-close:focus-visible{ outline:2px solid var(--coral); outline-offset:2px; }
+  .modal-media{ height:180px; border-radius:14px; margin-bottom:24px; }
+  .modal h3{ font-size:1.6rem; margin-bottom:10px; }
+  .modal-meta{ display:flex; gap:18px; flex-wrap:wrap; margin:18px 0; font-size:0.88rem; color:var(--ink-soft); }
+  .modal-meta strong{ color:var(--ink); display:block; font-size:0.78rem; text-transform:none; }
+  .modal p.desc{ color:var(--ink-soft); font-size:1.02rem; }
+
+  /* -------- Responsive -------- */
+  @media (max-width:900px){
+    .hero{ grid-template-columns:1fr; padding-top:140px; }
+    .hero-graphic{ height:260px; order:-1; }
+    .grid{ grid-template-columns:repeat(2,1fr); }
+    .about{ grid-template-columns:1fr; }
+    .avatar{ max-width:280px; }
+    .contact-grid{ grid-template-columns:1fr; }
+    .nav-links{ display:none; }
+  }
+  @media (max-width:560px){
+    .grid{ grid-template-columns:1fr; }
+    .wrap{ padding:0 20px; }
+    .process-item{ grid-template-columns:40px 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div id="cursor-dot"></div>
+
+<header id="site-header">
+  <nav class="wrap">
+    <a href="#top" class="logo">Kabir<span>.</span>Design</a>
+    <ul class="nav-links">
+      <li><a href="#work">Work</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+</header>
+
+<main id="top">
+
+  <!-- HERO -->
+  <section class="hero wrap">
+    <div>
+      <div class="hero-eyebrow">Graphic &amp; digital designer, based in Kathmandu</div>
+      <h1>Hi, I'm kabir — I design things people remember.</h1>
+      <p class="hero-sub">I build brand identities, websites, and print work for small studios and independent brands who'd rather stand out than blend in.</p>
+      <div class="cta-row">
+        <a href="#work" class="btn">See the work</a>
+        <a href="#contact" class="btn ghost">Start a project</a>
+      </div>
+      <div class="tag-row">
+        <span class="tag-pill">Branding</span>
+        <span class="tag-pill">Web Design</span>
+        <span class="tag-pill">Print</span>
+        <span class="tag-pill">Motion</span>
+      </div>
+    </div>
+    <div class="hero-graphic" aria-hidden="true">
+      <div class="blob b1"></div>
+      <div class="blob b2"></div>
+      <div class="blob b3"></div>
+      <div class="blob b4"></div>
+    </div>
+  </section>
+
+  <!-- WORK -->
+  <section class="work" id="work">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>Selected work</h2>
+        <p>A mix of identity systems, interfaces, and printed things from the last few years. Filter by discipline to see more.</p>
+      </div>
+      <div class="filters" id="filters">
+        <button class="filter-btn active" data-filter="all">All</button>
+        <button class="filter-btn" data-filter="Branding">Branding</button>
+        <button class="filter-btn" data-filter="Web">Web</button>
+        <button class="filter-btn" data-filter="Print">Print</button>
+        <button class="filter-btn" data-filter="Motion">Motion</button>
+      </div>
+      <div class="grid" id="project-grid"></div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about">
+    <div class="wrap about">
+      <div class="avatar" aria-hidden="true"></div>
+      <div>
+        <div class="section-head" style="margin-bottom:0;">
+          <h2>A bit about how I work</h2>
+        </div>
+        <div class="about-bio" style="margin-top:24px;">
+          <p>I've spent the last seven years helping small brands figure out what they look like — starting with a logo, but usually ending up somewhere between a website, a packaging system, and a set of rules nobody breaks. I studied graphic design in Kathmandu and picked up front-end code out of necessity, then stayed because I liked it.</p>
+          <p>I care most about work that still feels sharp a few years later, not just at launch.</p>
+        </div>
+        <div class="skills">
+          <span class="skill-chip">Identity systems</span>
+          <span class="skill-chip">Art direction</span>
+          <span class="skill-chip">Figma &amp; Webflow</span>
+          <span class="skill-chip">HTML / CSS</span>
+          <span class="skill-chip">Editorial design</span>
+          <span class="skill-chip">Motion graphics</span>
+        </div>
+
+        <div class="process">
+          <ol class="process-list">
+            <li class="process-item">
+              <span class="process-num">01</span>
+              <div><h3>Discover</h3><p>Understand the brand, the audience, and what's actually being solved before opening any design software.</p></div>
+            </li>
+            <li class="process-item">
+              <span class="process-num">02</span>
+              <div><h3>Define</h3><p>Narrow the direction to one strong idea, backed by a mood board and a rough plan everyone agrees on.</p></div>
+            </li>
+            <li class="process-item">
+              <span class="process-num">03</span>
+              <div><h3>Design</h3><p>Build the system — logo, type, color, layouts — and pressure-test it across real use cases.</p></div>
+            </li>
+            <li class="process-item">
+              <span class="process-num">04</span>
+              <div><h3>Deliver</h3><p>Hand off clean files and clear guidelines so the work holds up long after I'm off the project.</p></div>
+            </li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section class="contact" id="contact">
+    <div class="wrap contact-grid">
+      <div>
+        <h2>Let's make something.</h2>
+        <p class="lead">Got a project in mind? Tell me a little about it and I'll get back to you within a couple of days.</p>
+        <div class="contact-links">
+          <a href="https://www.facebook.com/profile.php?id=61594127851712">Facebook</a>
+          <a href="#">Instagram</a>
+          <a href="#">LinkedIn</a>
+        </div>
+      </div>
+      <form id="contact-form" novalidate>
+        <div>
+          <label for="name">Name</label>
+          <input type="text" id="name" name="name" autocomplete="name">
+          <div class="field-error" id="err-name"></div>
+        </div>
+        <div>
+          <label for="email">Email</label>
+          <input type="email" id="email" name="email" autocomplete="email">
+          <div class="field-error" id="err-email"></div>
+        </div>
+        <div>
+          <label for="message">Tell me about your project</label>
+          <textarea id="message" name="message"></textarea>
+          <div class="field-error" id="err-message"></div>
+        </div>
+        <div class="submit-row">
+          <button type="submit" class="btn">Send message</button>
+          <span id="form-status" aria-live="polite"></span>
+        </div>
+      </form>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>© 2026 Kabir_mertz</span>
+    <span>Designed &amp; built with a little color</span>
+  </div>
+</footer>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modal-overlay">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <button class="modal-close" id="modal-close" aria-label="Close">✕</button>
+    <div class="modal-media" id="modal-media"></div>
+    <div class="card-cat" id="modal-cat"></div>
+    <h3 id="modal-title"></h3>
+    <div class="modal-meta">
+      <div><strong>Role</strong><span id="modal-role"></span></div>
+      <div><strong>Year</strong><span id="modal-year"></span></div>
+      <div><strong>Tools</strong><span id="modal-tools"></span></div>
+    </div>
+    <p class="desc" id="modal-desc"></p>
+  </div>
+</div>
+
+<script>
+  // ---------------- Data ----------------
+  const projects = [
+    {
+      id:1, title:"Solstice", category:"Branding", year:"2025",
+      role:"Brand identity, art direction", tools:"Illustrator, Figma",
+      grad:"linear-gradient(135deg,var(--coral),var(--yellow))",
+      desc:"A full identity system for a wellness retreat — wordmark, a warm seasonal color system, and packaging for their skincare line."
+    },
+    {
+      id:2, title:"Kite & Co", category:"Web", year:"2024",
+      role:"Web design, front-end build", tools:"Webflow, custom CSS",
+      grad:"linear-gradient(135deg,var(--mint),var(--violet))",
+      desc:"An online shop for a stationery brand, designed to feel like flipping through a paper catalog rather than a typical storefront."
+    },
+    {
+      id:3, title:"Bloomfield Market", category:"Print", year:"2024",
+      role:"Poster series, typography", tools:"InDesign, Risograph",
+      grad:"linear-gradient(135deg,var(--yellow),var(--mint))",
+      desc:"A set of six risograph posters for a neighborhood farmers market, one for every season change plus two special events."
+    },
+    {
+      id:4, title:"Nimbus", category:"Web", year:"2023",
+      role:"Product UI design", tools:"Figma, Framer",
+      grad:"linear-gradient(135deg,var(--violet),var(--coral))",
+      desc:"Interface design for a weather startup's iOS and web app, built around a single animated forecast card."
+    },
+    {
+      id:5, title:"Paper Trail", category:"Print", year:"2023",
+      role:"Editorial layout", tools:"InDesign",
+      grad:"linear-gradient(135deg,var(--coral),var(--violet))",
+      desc:"Layout and typesetting for an independent zine about small-town architecture, across four quarterly issues."
+    },
+    {
+      id:6, title:"Motion Study 01", category:"Motion", year:"2025",
+      role:"Animation, sound-adjacent timing", tools:"After Effects",
+      grad:"linear-gradient(135deg,var(--mint),var(--yellow))",
+      desc:"A short animated logo reveal exploring how far a wordmark can bend before it stops being legible."
+    }
+  ];
+
+  const grid = document.getElementById('project-grid');
+
+  function renderProjects(filter){
+    grid.innerHTML = "";
+    projects.forEach(p => {
+      const card = document.createElement('div');
+      card.className = 'card';
+      card.tabIndex = 0;
+      card.setAttribute('role','button');
+      card.setAttribute('aria-label', `View project: ${p.title}`);
+      if(filter !== 'all' && p.category !== filter) card.classList.add('hidden');
+      card.innerHTML = `
+        <div class="card-media" style="background:${p.grad}"></div>
+        <div class="card-body">
+          <div class="card-cat">${p.category}</div>
+          <h3>${p.title}</h3>
+          <div class="card-year">${p.year}</div>
+        </div>`;
+      card.addEventListener('click', () => openModal(p));
+      card.addEventListener('keydown', e => { if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); openModal(p); } });
+      grid.appendChild(card);
+    });
+  }
+  renderProjects('all');
+
+  document.getElementById('filters').addEventListener('click', e => {
+    if(!e.target.classList.contains('filter-btn')) return;
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    e.target.classList.add('active');
+    renderProjects(e.target.dataset.filter);
+  });
+
+  // ---------------- Modal ----------------
+  const overlay = document.getElementById('modal-overlay');
+  let lastFocused = null;
+
+  function openModal(p){
+    document.getElementById('modal-media').style.background = p.grad;
+    document.getElementById('modal-cat').textContent = p.category;
+    document.getElementById('modal-title').textContent = p.title;
+    document.getElementById('modal-role').textContent = p.role;
+    document.getElementById('modal-year').textContent = p.year;
+    document.getElementById('modal-tools').textContent = p.tools;
+    document.getElementById('modal-desc').textContent = p.desc;
+    lastFocused = document.activeElement;
+    overlay.classList.add('open');
+    document.getElementById('modal-close').focus();
+    document.body.style.overflow = 'hidden';
+  }
+  function closeModal(){
+    overlay.classList.remove('open');
+    document.body.style.overflow = '';
+    if(lastFocused) lastFocused.focus();
+  }
+  document.getElementById('modal-close').addEventListener('click', closeModal);
+  overlay.addEventListener('click', e => { if(e.target === overlay) closeModal(); });
+  document.addEventListener('keydown', e => { if(e.key === 'Escape' && overlay.classList.contains('open')) closeModal(); });
+
+  // ---------------- Nav scroll state ----------------
+  const header = document.getElementById('site-header');
+  window.addEventListener('scroll', () => {
+    header.classList.toggle('scrolled', window.scrollY > 40);
+  });
+
+  // ---------------- Cursor dot ----------------
+  const dot = document.getElementById('cursor-dot');
+  const accentColors = ['var(--coral)','var(--yellow)','var(--mint)','var(--violet)'];
+  window.addEventListener('mousemove', e => {
+    dot.style.top = e.clientY + 'px';
+    dot.style.left = e.clientX + 'px';
+  });
+  document.querySelectorAll('.card, .btn, .filter-btn').forEach((el, i) => {
+    el.addEventListener('mouseenter', () => {
+      dot.style.background = accentColors[i % accentColors.length];
+      dot.style.width = '30px';
+      dot.style.height = '30px';
+    });
+    el.addEventListener('mouseleave', () => {
+      dot.style.background = 'var(--coral)';
+      dot.style.width = '18px';
+      dot.style.height = '18px';
+    });
+  });
+
+  // ---------------- Contact form ----------------
+  const form = document.getElementById('contact-form');
+  form.addEventListener('submit', e => {
+    e.preventDefault();
+    const name = document.getElementById('name');
+    const email = document.getElementById('email');
+    const message = document.getElementById('message');
+    const errName = document.getElementById('err-name');
+    const errEmail = document.getElementById('err-email');
+    const errMessage = document.getElementById('err-message');
+    const status = document.getElementById('form-status');
+
+    errName.textContent = ''; errEmail.textContent = ''; errMessage.textContent = ''; status.textContent = '';
+    let valid = true;
+
+    if(!name.value.trim()){ errName.textContent = 'Add your name.'; valid = false; }
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if(!emailPattern.test(email.value.trim())){ errEmail.textContent = 'Add a valid email.'; valid = false; }
+    if(!message.value.trim()){ errMessage.textContent = 'Tell me a little about the project.'; valid = false; }
+
+    if(!valid) return;
+
+    status.textContent = 'Message sent — thanks!';
+    status.style.color = '#2E7D4F';
+    form.reset();
+  });
+</script>
+
+</body>
+</html>
